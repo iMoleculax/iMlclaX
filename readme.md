@@ -37,10 +37,10 @@ A missão é desenvolver uma solução de software e infraestrutura, baseada na 
  - Comandos úteis em containers Docker.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/gdmacedo/DAO_Organiza-oAut-nomaDescentralizada/main/DAO_Map.jpg" alt="DAO - Ops">
+  <img src="https://raw.githubusercontent.com/iMoleculax/iMlclaX/refs/heads/main/imagens/Sequenciamento.jpeg" alt="Sistema de Gerenciamento de Sequenciamento Genético">
 </p>
 
 
-### Créditos
-Macedo, Glener Diniz
----
+<h3 style="margin-bottom: 0;">Créditos:</h3> 
+<h5 style="margin-top: 0;">Macedo, Glener Diniz</h5>
+<hr>
