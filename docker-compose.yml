@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  djangoapp:
+    container_name: iblogx_app
+    build:
+      context: .
+    ports:
+      - 8888:8888
+    volumes:
+      - ./iBlogX:/iBlogX
+      - ./data/web/static:/data/web/static/
+      - ./data/web/media:/data/web/media/
+    env_file:
+      - ./dotenv_files/.env
+    depends_on:
+      - psql
+  psql:
+    container_name: psql
+    #image: postgres:13-alpine - # Inicial
+    image: postgres:16-alpine
+    volumes:
+      - ./data/postgres/data:/var/lib/postgresql/data/
+    env_file:
+      - ./dotenv_files/.env
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: iblogx_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin
+      - ./pgadmin_servers.json:/pgadmin4/servers.json
+    depends_on:
+      - psql

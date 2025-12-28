@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    container_name: iMlclaXSQL-postgres-compose
+    environment:
+      POSTGRES_PASSWORD: M315642m*-
+      POSTGRES_USER: iMlclaXUser
+      POSTGRES_DB: iMlclaXDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  pgdata:

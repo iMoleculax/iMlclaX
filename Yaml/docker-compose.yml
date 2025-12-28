@@ -1,0 +1,55 @@
+version: '3.8'
+
+# Antes de tudo criar a rede manualmente:
+# docker network create --driver bridge imlclax-net
+
+services:
+  postgres:
+    # Você pode escolher entre duas imagens:
+    # image: postgres:latest          # Usa a última versão estável disponível da imagem oficial do PostgreSQL.
+    # É mais pesada, baseada em Debian/Ubuntu, inclui várias ferramentas e bibliotecas.
+    # Boa para desenvolvimento geral, mas ocupa mais espaço.
+
+    # OU, se preferir uma versão mais leve e específica:
+    image: postgres:16.1-alpine   # Usa a versão 16.1 específica do PostgreSQL, baseada na distribuição Alpine Linux.
+    # É muito mais leve e enxuta, ideal para produção em ambientes que precisam de eficiência.
+    # Porém, pode exigir instalação manual de algumas dependências extras.
+
+    container_name: iMlclaX         # Nome do container
+    restart: always                 # Garante que o container reinicie automaticamente
+    environment:
+      POSTGRES_DB: iMlclaXDb        # Nome do banco de dados inicial
+      POSTGRES_USER: iMlclaXUser    # Usuário do banco de dados
+      POSTGRES_PASSWORD: M315642m*- # Senha do banco de dados
+    ports:
+      - "5433:5432"                 # Mapeia a porta 5433 do host para a porta 5432 do container
+    volumes:
+      # Persiste os dados no volume 'pgdata' no host para evitar perda de dados ao parar o container
+      - pgdata:/var/lib/postgresql/data 
+      # Opcional: Adiciona scripts SQL para inicialização automática do banco
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - imlclax-net                 # Conecta o container à rede já criada
+
+volumes:
+  pgdata:                           # Definição do volume para persistência de dados
+    driver: local
+
+networks:
+  imlclax-net:
+    external: true                  # Usa a rede já criada manualmente (não recria)
+    driver: bridge
+
+# Execução:
+# 1. Crie a rede antes de rodar o compose:
+#    docker network create --driver bridge imlclax-net
+# 2. Acesse a pasta onde está este arquivo e execute:
+#    docker compose up -d
+# O parâmetro -d executa o container em modo “detached”, ou seja, em segundo plano.
+#---------------------------------------------------------------------------------------------
+# Configurando a inclusão do pgadmin:
+# docker run --name admin.imlclax --network imlclax-net -p 15432:80 -e 
+# PGADMIN_DEFAULT_EMAIL=admin.imlclax-dbf@gmail.com -e
+# PGADMIN_DEFAULT_PASSWORD=admin135*642-?1 -d dpage/pgadmin4
+#
+#
