@@ -1,0 +1,5 @@
+# Dependências externas.
+make>=4.3
+docker>=24
+docker-compose>=2.20
+postgresql>=16

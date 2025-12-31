@@ -1,40 +1,44 @@
 version: '3.9'
 
 services:
-  djangoapp:
-    container_name: iblogx_app
+  imlclax_app:
+    user: "root"  #Assim o Django roda como root e sempre terá permissão para escrever.
+    container_name: imlclax_app
     build:
       context: .
     ports:
-      - 8888:8888
+      - "8989:8989"
     volumes:
-      - ./iBlogX:/iBlogX
-      - ./data/web/static:/data/web/static/
+      - ./iMlclaX_App:/iMlclaX_App
       - ./data/web/media:/data/web/media/
     env_file:
       - ./dotenv_files/.env
     depends_on:
-      - psql
-  psql:
-    container_name: psql
-    #image: postgres:13-alpine - # Inicial
+      - imlclax_psql
+
+  imlclax_psql:
+    container_name: imlclax_psql
     image: postgres:16-alpine
+    restart: always
     volumes:
       - ./data/postgres/data:/var/lib/postgresql/data/
     env_file:
       - ./dotenv_files/.env
+    ports:
+      - "5432:5432"
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: iblogx_pgadmin
+    container_name: imlclax_pgadmin
+    restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: imlclax@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin-imlclax
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:
-      - "5050:80"
+      - "15050:80"   # ✅ porta externa ajustada
     volumes:
       - ./data/pgadmin:/var/lib/pgadmin
       - ./pgadmin_servers.json:/pgadmin4/servers.json
     depends_on:
-      - psql
+      - imlclax_psql

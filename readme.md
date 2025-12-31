@@ -40,6 +40,11 @@ A missão é desenvolver uma solução de software e infraestrutura, baseada na 
   <img src="https://raw.githubusercontent.com/iMoleculax/iMlclaX/refs/heads/main/imagens/Sequenciamento.jpeg" alt="Sistema de Gerenciamento de Sequenciamento Genético">
 </p>
 
+## Inicialização
+1. Rode o script de setup, mas antes as dependencias: requirements-system.txt
+   ```bash
+   ./init.sh
+
 
 <h3 style="margin-bottom: 0;">Créditos:</h3> 
 <h5 style="margin-top: 0;">Macedo, Glener Diniz</h5>

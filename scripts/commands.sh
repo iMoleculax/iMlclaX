@@ -11,18 +11,10 @@ done
 echo "✅ Postgres Database Started Successfully ($POSTGRES_HOST:$POSTGRES_PORT)"
 
 # Usa o Python da virtualenv
-/_iBlogXW/bin/python manage.py collectstatic --noinput
-/_iBlogXW/bin/python manage.py makemigrations --noinput
-/_iBlogXW/bin/python manage.py migrate --noinput
+python3 manage.py makemigrations --noinput && \
+python3 manage.py migrate --noinput && \
+python3 manage.py collectstatic --noinput
+
 #python manage.py runserver 192.168.1.170:8000 - Tentou com esse ip, mas não funcionou
 # Sobe o servidor Django
-/_iBlogXW/bin/python manage.py runserver 0.0.0.0:8888
-
-
-
-
-
-
-
-
-
+python3 manage.py runserver 0.0.0.0:8989
