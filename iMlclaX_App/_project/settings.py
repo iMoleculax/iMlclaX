@@ -22,16 +22,17 @@ STATICFILES_DIRS = [
     BASE_DIR / 'templates' / 'static',
 ]
 
-
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
-
 
 MEDIA_URL = '/media/'
 # /data/web/media
 MEDIA_ROOT = DATA_DIR / 'media'
+
+# Se não estiver com usuário logado, direciona para a url abaixo:
+LOGIN_URL = '/usuarios/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'   # para onde o usuário vai depois de logar
+LOGOUT_REDIRECT_URL = '/usuarios/login/'  # para onde vai depois de deslogar
 
 
 # Quick-start development settings - unsuitable for production

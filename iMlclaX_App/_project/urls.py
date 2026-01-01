@@ -10,9 +10,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
+from . import views
+
 
 urlpatterns = [
     path('', lambda request: redirect('/usuarios/login/')),
+    path('dashboard/', views.fnct_dashboard, name='url_dashboard'), 
     path('admin/', admin.site.urls),
     path('usuarios/', include('usuarios.urls')),
 ]

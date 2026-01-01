@@ -3,17 +3,16 @@ from . import views
 
 
 urlpatterns = [
+    
     path('lista/', views.fnct_clnts_lista, name="url_clnts_lista"),
     path('cliente/<int:id_cliente>/',
          views.fnct_clnts_edit, name="url_clnts_edit"),
     path('cadastro/', views.fnct_cdstro, name='url_cadastro'), 
 
-
     path('buscar-endereco/<str:cep>/',
          views.buscar_endereco, name='buscar_endereco'),
 
-    path('edita-endereco/<int:id_endrco>/',
-         views.fnct_endr_clnt_prfl, name='url_ender_clnte_prfl'),
+    path('edita-endereco/<int:id_endrco>/', views.fnct_endr_clnt_prfl, name='url_ender_clnte_prfl'),
          
     path('edita-endereco/<int:id_endrco>/',
          views.fnct_endereco_clnte_cdstro, name='url_endereco_clnte_cdstro'),

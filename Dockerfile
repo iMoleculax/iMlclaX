@@ -77,13 +77,21 @@ RUN python -m venv /_iMlclaX_AppW && \
 # Todas do útlimo RUN, trocadas pelas de baixo:
 
 # Cria diretórios de static e media e ajusta permissões
-RUN mkdir -p /data/web/static /data/web/media \
-    && chown -R iMlclaXUser:iMlclaXUser /data/web/static /data/web/media /_iMlclaX_AppW \
-    && chmod -R 755 /data/web/static /data/web/media
+# Primeiro comando: além de configurar static e media, também muda o dono de todo o diretório da aplicação (/_iMlclaX_AppW).
+# RUN mkdir -p /data/web/static /data/web/media /data/web/media/user_photos && \
+#     chown -R iMlclaXUser:iMlclaXUser /data/web/static /data/web/media /data/web/media/user_photos /_iMlclaX_AppW && \
+#     chmod -R 755 /data/web/static /data/web/media /data/web/media/user_photos
 
-RUN mkdir -p /data/web/static /data/web/media && \
-    chown -R iMlclaXUser:iMlclaXUser /data/web/static /data/web/media && \
-    chmod -R 755 /data/web/static /data/web/media
+# Segundo comando: só mexe nas pastas de static e media, sem tocar no diretório da aplicação.
+RUN mkdir -p /data/web/static /data/web/media /data/web/media/user_photos && \
+    chown -R iMlclaXUser:iMlclaXUser /data/web/static /data/web/media /data/web/media/user_photos && \
+    chmod -R 755 /data/web/static /data/web/media /data/web/media/user_photos
+
+# Cria diretórios de local onde serão arquivados os arquivos .Fasta
+RUN mkdir -p /data/web/fasta && \
+    chown -R iMlclaXUser:iMlclaXUser /data/web/fasta && \
+    chmod -R 755 /data/web/fasta
+
 
 # Adiciona a pasta scripts e iMlclaX_App/Scritps 
 # no $PATH do container.

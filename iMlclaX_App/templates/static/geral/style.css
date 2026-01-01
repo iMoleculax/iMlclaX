@@ -1,7 +1,7 @@
 /**
-* Template Name: iClynikaX
+* Template Name: iMoleculaX
 * Template URL: 
-* Updated: Apr 17 2025 with Bootstrap v5.3.3
+* Updated: Dezembro 31 2025 with Bootstrap v5.3.3
 * Author: 
 * License:
 */
@@ -23,7 +23,6 @@ html, body {
   flex-direction: column;
   min-height: calc(100vh - 30px); /* ocupa 100% da altura da janela */
 }
-
 
 .imagem{
 	float:left; 

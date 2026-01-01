@@ -302,10 +302,6 @@ def fnct_cdstro(request: HttpRequest) -> HttpResponse:
             return redirect('/usuarios/cadastro')
 
 
-
-
-
-
 @login_required(login_url='/usuarios/login/')
 def fnct_clnts_lista(request):
 
@@ -444,7 +440,7 @@ def fnct_clnts_edit(request, id_cliente):
     return render(request, 'cliente.html', {'Lst_Pets': slct_Get_Pet, 'Lst_Pts_Sxo': slct_Pet_Sxos, 'Endrcs_Cli': slct_Endrs_Cli, 'Pets_Cliente': slct_id_Pet_Cli, 'cliente': slct_id_cliente, 'cGrp_Usuario': Get_cGrp_Usuario(request.user), 'perfil': slct_id_Perfil, 'is_medico': is_medico(request.user)})
 
 
-@login_required(login_url='/usuarios/login/') 
+@login_required(login_url='/usuarios/login/')
 def fnct_endr_clnt_prfl(request, id_endrco):
     #    if not is_medico(request.user):
     #        messages.add_message(request, constants.WARNING, 'Somente médicos podem acessar essa página.')
@@ -657,7 +653,7 @@ def fnct_login(request):
                                  password=senha)
         if user:
             auth.login(request, user)
-            return redirect('/paciente/home')
+            return redirect('/dashboard')
         messages.add_message(request, constants.ERROR,
                              'Usuário ou senha incorretos')
         return redirect('/usuarios/login')
@@ -927,14 +923,15 @@ def atualizar_menu_esquerdo(request):
             data = json.loads(request.body)
             novo_valor = data.get('id_mn_Esquerdo')
 
-            usuario = Perfil.objects.get(user=request.user.id)  # exemplo fixo
+            usuario = Perfil.objects.get(user=request.user)  # exemplo fixo
+
             usuario.id_mn_Esquerdo = novo_valor
             usuario.save()
             print('Status Ok')
 
             return JsonResponse({'status': 'ok'})
         except Exception as e:
-            print('erro')
+            print('erro:', e)
             return JsonResponse({'error': str(e)}, status=444400)
 
     # Se não for POST, retorna erro

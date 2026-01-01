@@ -18,22 +18,19 @@
     <link href="{% static 'assets/img/favicon.png'%}" rel="icon">
     <link href="{% static 'assets/img/apple-touch-icon.png'%}" rel="apple-touch-icon">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="{% static 'security/static/assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
-    <link href="{% static 'security/static/assets/vendor/bootstrap-icons/bootstrap-icons.css'%}" rel="stylesheet">
-    <link href="{% static 'security/static/assets/vendor/boxicons/css/boxicons.min.css'%}" rel="stylesheet">
-    <link href="{% static 'security/static/assets/vendor/quill/quill.snow.css'%}" rel="stylesheet">
-    <link href="{% static 'security/static/assets/vendor/quill/quill.bubble.css'%}" rel="stylesheet">
-    <link href="{% static 'security/static/assets/vendor/remixicon/remixicon.css'%}" rel="stylesheet">
-    <link href="{% static 'security/static/assets/vendor/simple-datatables/style.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/bootstrap-icons/bootstrap-icons.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/boxicons/css/boxicons.min.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/quill/quill.snow.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/quill/quill.bubble.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/remixicon/remixicon.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/css/style.css'%}?v={% now 'YmdHis' %}" rel="stylesheet">
 
-    <!-- Template Main CSS File -->
-    <link href="{% static 'security/static/assets/css/style.css'%}?v={% now 'YmdHis' %}" rel="stylesheet">
-       
 </head>
   
 <body sidebar-collapsed>
@@ -44,7 +41,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="./" class="logo d-flex align-items-center">
         <img src="{% static 'security/static/assets/img/logo.png'%}" alt="">
-        <span class="d-none d-lg-block">iClynikaX</span>
+        <span class="d-none d-lg-block">iMoleculaX</span>
       </a> 
 
       <div style="display: flex; gap: 10px; align-items: center;">
@@ -60,9 +57,6 @@
           style="cursor: pointer;">
         </i>
       </div>
-
-      
-
     </div><!-- End Logo -->
 
     <nav class="header-nav ms-auto">
@@ -332,8 +326,8 @@
           <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li><a title="Lista de cadastro de clientes" id="sidebar-nav-Atendimento-clientes" href="{% url 'url_clnts_lista' %}"><i class="bi bi-circle"></i><span>Clientes</span></a></li>
             <li><a title="Agenda"  href="{% url 'url_agenda' %}"><i class="bi bi-circle"></i><span>Agenda</span></a></li>
-            <li><a title="Lista de cadastro de Consultas" href="{% url 'url_pcnts_cnsltas' %}"><i class="bi bi-circle"></i><span>Consultas</span></a></li>
-            <li><a title="Lista de cadastro de Autorizações" href="{% url 'url_atrzacoes'  %}"><i class="bi bi-circle"></i><span>Autorizações</span></a></li>
+            <li><a title="Lista de cadastro de Consultas" href=""><i class="bi bi-circle"></i><span>Consultas</span></a></li>
+            <li><a title="Lista de cadastro de Autorizações" href=""><i class="bi bi-circle"></i><span>Autorizações</span></a></li>
           </ul>
         </li>
 
@@ -342,7 +336,7 @@
             <i class="bi bi-menu-button-wide"></i><span>Security</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul id="security-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <li><a title="Mapa Geral de Segurança" id="sidebar-nav-security-mapa" href="{% url 'url_security' %}"><i class="bi bi-circle"></i><span>Mapa Geral</span></a></li>
+            <li><a title="Mapa Geral de Segurança" id="sidebar-nav-security-mapa" href=""><i class="bi bi-circle"></i><span>Mapa Geral</span></a></li>
           </ul>
         </li>
       {% endif %}
@@ -354,7 +348,7 @@
               <i class="bi bi-menu-button-wide"></i><span>Security</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="security-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-              <li><a title="Mapa Geral de Segurança" id="sidebar-nav-security-mapa" href="{% url 'url_security' %}"><i class="bi bi-circle"></i><span>Mapa Geral</span></a></li>
+              <li><a title="Mapa Geral de Segurança" id="sidebar-nav-security-mapa" href=""><i class="bi bi-circle"></i><span>Mapa Geral</span></a></li>
             </ul>
           </li>
         {% endif %}
@@ -370,14 +364,14 @@
         </a>
         <ul id="usuarios-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{% url 'url_scrty_acessos' %}">
+            <a href="">
               <i class="bi bi-circle"></i><span>Acessos</span>
             </a>
           </li>
         </ul>
       </li><!-- End Forms Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'url_scrty_sobre' %}">
+        <a class="nav-link collapsed" href="">
           <i class="bi bi-card-list"></i>
           <span>Sobre</span>
         </a>
@@ -395,7 +389,7 @@
     <!-- Footer -->
     <footer id="footer" class="footer">
       <div class="copyright">
-            2025 <strong> - </strong>UNIVESP - Universidade Virtual do Estado de São Paulo : Projeto Integrador - <b>iClynikaX - Sistema de Gerenciamento de Clínicas</b>
+              2024 : <strong>{% now "Y" %}</strong> - By: Macedo, Glener Diniz<b> - iMoleculaX : Sistema de Gerenciamento de Sequenciamento Genético.</b>
       </div>
     </footer
     ><!-- End Footer -->
@@ -403,17 +397,17 @@
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <!-- Vendor JS Files -->
-    <script src="{% static 'security/static/assets/vendor/apexcharts/apexcharts.min.js'%}"></script>
-    <script src="{% static 'security/static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
-    <script src="{% static 'security/static/assets/vendor/chart.js/chart.umd.js'%}"></script>
-    <script src="{% static 'security/static/assets/vendor/echarts/echarts.min.js'%}"></script>
-    <script src="{% static 'security/static/assets/vendor/quill/quill.js'%}"></script>
-    <script src="{% static 'security/static/assets/vendor/simple-datatables/simple-datatables.js'%}?v={% now 'YmdHis' %}"></script>
-    <script src="{% static 'security/static/assets/vendor/tinymce/tinymce.min.js'%}"></script>
-    <script src="{% static 'security/static/assets/vendor/php-email-form/validate.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/apexcharts/apexcharts.min.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/chart.js/chart.umd.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/echarts/echarts.min.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/quill/quill.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/simple-datatables/simple-datatables.js'%}?v={% now 'YmdHis' %}"></script>
+    <script src="{% static 'geral/assets/vendor/tinymce/tinymce.min.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/php-email-form/validate.js'%}"></script>
 
     <!-- Template Main JS File -->
-    <script src="{% static 'security/static/assets/js/main.js'%}?v={% now 'YmdHis' %}"></script>
+    <script src="{% static 'geral/assets/js/main.js'%}?v={% now 'YmdHis' %}"></script>
 
 
     {% if Perfil_User.id_mn_Esquerdo == 0 %}

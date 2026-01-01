@@ -3,6 +3,7 @@
 <html lang="pt-BR">
 
   <head>
+
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,42 +15,50 @@
       <meta content="" name="description">
       <meta content="" name="keywords">
 
-      <!-- Favicons -->
-      <link href="{% static 'assets/img/favicon.png'%}" rel="icon">
-      <link href="{% static 'assets/img/apple-touch-icon.png'%}" rel="apple-touch-icon">
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/favicon.png'%}" rel="icon">
+    <link href="{% static 'assets/img/apple-touch-icon.png'%}" rel="apple-touch-icon">
 
-      <!-- Google Fonts -->
-      <link href="https://fonts.gstatic.com" rel="preconnect">
-      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-      <!-- Vendor CSS Files -->
-      <link href="{% static 'security/static/assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
-      <link href="{% static 'security/static/assets/vendor/bootstrap-icons/bootstrap-icons.css'%}" rel="stylesheet">
-      <link href="{% static 'security/static/assets/vendor/boxicons/css/boxicons.min.css'%}" rel="stylesheet">
-      <link href="{% static 'security/static/assets/vendor/quill/quill.snow.css'%}" rel="stylesheet">
-      <link href="{% static 'security/static/assets/vendor/quill/quill.bubble.css'%}" rel="stylesheet">
-      <link href="{% static 'security/static/assets/vendor/remixicon/remixicon.css'%}" rel="stylesheet">
-      <link href="{% static 'security/static/assets/vendor/simple-datatables/style.css'%}" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'geral/assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/bootstrap-icons/bootstrap-icons.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/boxicons/css/boxicons.min.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/quill/quill.snow.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/quill/quill.bubble.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/remixicon/remixicon.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/css/style.css'%}?v={% now 'YmdHis' %}" rel="stylesheet">
 
-      <!-- Template Main CSS File -->
-      <link href="{% static 'assets/css/style.css'%}?v={% now 'YmdHis' %}" rel="stylesheet">
-      
   </head>
   
-  <body class="toggle-sidebar">
-
+  <body>
 
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center">
 
       <div class="d-flex align-items-center justify-content-between">
         <a href="./" class="logo d-flex align-items-center">
-          <img src="{% static 'security/static/assets/img/logo.png'%}" alt="">
-          <span class="d-none d-lg-block">iClynikaX</span>
+          <img src="{% static 'geral/img/logo.png'%}" alt="">
+          <span class="d-none d-lg-block">iMoleculaX</span>
         </a> 
-        <i class="bi bi-list toggle-sidebar-btn"></i>
-      </div><!-- End Logo -->
 
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <!-- Botão original -->
+          <i id="{{Perfil_User.id_mn_Esquerdo}}"
+            onclick="svsttusmnesquerdo(this);"
+            class="bi bi-list toggle-sidebar-btn"
+            style="cursor: pointer;"></i>
+
+          <!-- Novo botão ao lado -->
+          <i onclick="abrirPainelDireito();"
+            class="bi bi-layout-sidebar-inset-reverse"
+            style="cursor: pointer;">
+          </i>
+        </div>
+      </div><!-- End Logo -->
 
       <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
@@ -282,7 +291,7 @@
           </li>
 
           <!-- ======= Se o usuário for do grupo Atendente ======= -->
-          {% if cGrp_Usuario == 'Atendente' and not request.user.is_superuser %}
+          {% if cGrp_Usuario == 'Orientador' and not request.user.is_superuser %}
             <li class="nav-item">
               <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Atendimento</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -298,31 +307,51 @@
           <!-- ======= Finaliza se o usuário for do grupo Atendente ======= -->
 
           <!-- ======= Se o usuário for do grupo Gerente ======= -->
-            {% if cGrp_Usuario == 'Gerente' and not request.user.is_superuser %}
+            {% if cGrp_Usuario == 'Pesquisador' and not request.user.is_superuser %}
               <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                   <i class="bi bi-menu-button-wide"></i><span>Atendimento</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                  <li><a title="Lista de cadastro de clientes"  href="{% url 'url_clnts_lista' %}"><i class="bi bi-circle"></i><span>Clientes</span></a></li>
-                  <li><a title="Lista de cadastro de Consultas" href="{% url 'url_pcnts_cnsltas' %}"><i class="bi bi-circle"></i><span>Consultas</span></a></li>
-                  <li><a title="Lista de cadastro de Autorizações" href="{% url 'url_atrzacoes'  %}"><i class="bi bi-circle"></i><span>Autorizações</span></a></li>
-                  <li><a title="Agenda" href="{% url 'url_agenda' %}"><i class="bi bi-circle"></i><span>Agenda</span></a></li>
+                  <li><a title="Lista de cadastro de clientes"  href=""><i class="bi bi-circle"></i><span>Clientes</span></a></li>
+                  <li><a title="Lista de cadastro de Consultas" href=""><i class="bi bi-circle"></i><span>Consultas</span></a></li>
+                  <li><a title="Lista de cadastro de Autorizações" href=""><i class="bi bi-circle"></i><span>Autorizações</span></a></li>
+                  <li><a title="Agenda" href=""><i class="bi bi-circle"></i><span>Agenda</span></a></li>
                 </ul>
               </li>
             {% endif %}
           <!-- ======= Finaliza se o usuário for do grupo Gerente ======= -->
 
+          <!-- ======= Se o usuário for do grupo Super Usuário ======= -->
           {% if request.user.is_superuser %}
             <li class="nav-item">
+              <a class="nav-link collapsed" data-bs-target="#Mapa-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Mapa-Painel de Controle</span><i class="bi bi-chevron-down ms-auto"></i>
+              </a>
+              <ul id="Mapa-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li><a title="Resumo dos projetos ativos, status das análises em execução e uso de armazenamento." id="sidebar-nav-Mapa-V-Geral" href=""><i class="bi bi-circle"></i><span>Visão Geral</span></a></li>
+                <li><a title="Log dos últimos arquivos carregados ou análises concluídas." id="sidebar-nav-Atvddes-Rcentes" href=""><i class="bi bi-circle"></i><span>Atividades Recentes</span></a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link collapsed" data-bs-target="#Projetos-nav" data-bs-toggle="collapse" title="Este menu permite agrupar vários arquivos .fasta sob um contexto comum (ex: 'Sequenciamento de Fungos Patogênicos')." href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Projetos</span><i class="bi bi-chevron-down ms-auto"></i>
+              </a>
+              <ul id="Projetos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li><a title="Resumo dos projetos ativos, status das análises em execução e uso de armazenamento." id="sidebar-nav-Projetos" href=""><i class="bi bi-circle"></i><span>Meus Projetos</span></a></li>
+                <li><a title="Log dos últimos arquivos carregados ou análises concluídas." href=""><i class="bi bi-circle"></i><span>Criar Novo Projeto</span></a></li>
+                <li><a title="Log dos últimos arquivos carregados ou análises concluídas." href=""><i class="bi bi-circle"></i><span>Colaboração</span></a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
               <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Atendimento</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-menu-button-wide"></i><span>Cadastro</span><i class="bi bi-chevron-down ms-auto"></i>
               </a>
               <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li><a title="Lista de cadastro de clientes" id="sidebar-nav-Atendimento-clientes" href="{% url 'url_clnts_lista' %}"><i class="bi bi-circle"></i><span>Clientes</span></a></li>
-                <li><a title="Lista de cadastro de Consultas" id="sidebar-nav-Atendimento-consultas" href="{% url 'url_pcnts_cnsltas' %}"><i class="bi bi-circle"></i><span>Consultas</span></a></li>
-                <li><a title="Lista de cadastro de Autorizações" id="sidebar-nav-Atendimento-autorizações" href="{% url 'url_atrzacoes'  %}"><i class="bi bi-circle"></i><span>Autorizações</span></a></li>
-                <li><a title="Agenda" id="sidebar-nav-Atendimento-agenda"  href="{% url 'url_agenda' %}"><i class="bi bi-circle"></i><span>Agenda</span></a></li>
+                <li><a title="Lista de cadastro de clientes" id="sidebar-nav-Atendimento-clientes" href=""><i class="bi bi-circle"></i><span>Clientes</span></a></li>
+                <li><a title="Lista de cadastro de Consultas" id="sidebar-nav-Atendimento-consultas" href=""><i class="bi bi-circle"></i><span>Consultas</span></a></li>
+                <li><a title="Lista de cadastro de Autorizações" id="sidebar-nav-Atendimento-autorizações" href=""><i class="bi bi-circle"></i><span>Autorizações</span></a></li>
+                <li><a title="Agenda" id="sidebar-nav-Atendimento-agenda"  href=""><i class="bi bi-circle"></i><span>Agenda</span></a></li>
               </ul>
             </li>
 
@@ -331,7 +360,7 @@
                 <i class="bi bi-menu-button-wide"></i><span>Security</span><i class="bi bi-chevron-down ms-auto"></i>
               </a>
               <ul id="security-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li><a title="Mapa Geral de Segurança" id="sidebar-nav-security-mapa" href="{% url 'url_security' %}"><i class="bi bi-circle"></i><span>Mapa Geral</span></a></li>
+                <li><a title="Mapa Geral de Segurança" id="sidebar-nav-security-mapa" href=""><i class="bi bi-circle"></i><span>Mapa Geral</span></a></li>
               </ul>
             </li>
             <li class="nav-heading">Configurações</li>
@@ -348,6 +377,7 @@
               </ul>
             </li><!-- End Forms Nav -->
           {% endif %}
+          <!-- ======= Finaliza se o usuário for do grupo Gerente ======= -->
 
           <!-- ======= Se o usuário for do PI-IV ======= -->
             {% if cGrp_Usuario == 'PI-IV' and not request.user.is_superuser %}
@@ -356,7 +386,7 @@
                   <i class="bi bi-menu-button-wide"></i><span>Security</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="security-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                  <li><a title="Mapa Geral de Segurança" id="sidebar-nav-security-mapa" href="{% url 'url_security' %}"><i class="bi bi-circle"></i><span>Mapa Geral</span></a></li>
+                  <li><a title="Mapa Geral de Segurança" id="sidebar-nav-security-mapa" href=""><i class="bi bi-circle"></i><span>Mapa Geral</span></a></li>
                 </ul>
               </li>
             {% endif %}
@@ -367,11 +397,11 @@
 
           <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#Help-nav" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-menu-button-wide"></i><span>Help</span><i class="bi bi-chevron-down ms-auto"></i>
+              <i class="bi bi-menu-button-wide"></i><span>Help - {{Perfil_User.id_mn_Esquerdo}}</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="Help-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
               <li>
-                <a class="nav-link collapsed" id="sidebar-nav-sobre" href="{% url 'url_scrty_sobre' %}"><i class="bi bi-circle"></i><span>Sobre</span></a>
+                <a class="nav-link collapsed" id="sidebar-nav-sobre" href=""><i class="bi bi-circle"></i><span>Sobre</span></a>
               </li>
             </ul>
           </li><!-- End Forms Nav -->
@@ -392,7 +422,7 @@
       <!-- Footer -->
       <footer id="footer" class="footer">
         <div class="copyright">
-              2025 <strong> - </strong>UNIVESP - Universidade Virtual do Estado de São Paulo : Projeto Integrador - <b>iClynikaX - Sistema de Gerenciamento de Clínicas</b>
+              2024 : <strong>{% now "Y" %}</strong> - By: Macedo, Glener Diniz<b> - iMoleculaX : Sistema de Gerenciamento de Sequenciamento Genético.</b>
         </div>
       </footer
       ><!-- End Footer -->
@@ -400,20 +430,70 @@
       <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
       <!-- Vendor JS Files -->
-      <script src="{% static 'security/static/assets/vendor/apexcharts/apexcharts.min.js'%}"></script>
-      <script src="{% static 'security/static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
-      <script src="{% static 'security/static/assets/vendor/chart.js/chart.umd.js'%}"></script>
-      <script src="{% static 'security/static/assets/vendor/echarts/echarts.min.js'%}"></script>
-      <script src="{% static 'security/static/assets/vendor/quill/quill.js'%}"></script>
-      <script src="{% static 'security/static/assets/vendor/simple-datatables/simple-datatables.js'%}"></script>
-      <script src="{% static 'security/static/assets/vendor/tinymce/tinymce.min.js'%}"></script>
-      <script src="{% static 'security/static/assets/vendor/php-email-form/validate.js'%}"></script>
+      <script src="{% static 'geral/assets/vendor/apexcharts/apexcharts.min.js'%}"></script>
+      <script src="{% static 'geral/assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+      <script src="{% static 'geral/assets/vendor/chart.js/chart.umd.js'%}"></script>
+      <script src="{% static 'geral/assets/vendor/echarts/echarts.min.js'%}"></script>
+      <script src="{% static 'geral/assets/vendor/quill/quill.js'%}"></script>
+      <script src="{% static 'geral/assets/vendor/simple-datatables/simple-datatables.js'%}"></script>
+      <script src="{% static 'geral/assets/vendor/tinymce/tinymce.min.js'%}"></script>
+      <script src="{% static 'geral/assets/vendor/php-email-form/validate.js'%}"></script>
 
 
       <!-- Template Main JS File -->
-      <script src="{% static 'security/static/assets/js/main.js' %}?v={% now 'YmdHis' %}"></script>
+      <script src="{% static 'geral/assets/js/main.js' %}?v={% now 'YmdHis' %}"></script>
 
-      <script src="{% static 'geral/js/myFunctions.js' %}"></script>
+      <script src="{% static 'geral/js/myFunctions.js' %}?v={% now 'YmdHis' %}}"></script>
+
+
+      {% if Perfil_User.id_mn_Esquerdo == '0' %}
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              document.body.classList.add("toggle-sidebar");
+            });
+          </script>
+      {% endif %}
+
+
+    
+    <script>
+      function svsttusmnesquerdo(obj) {
+        let novoValor = obj.id === "1" ? 0 : 1;
+        const url = "{% url 'atualizar_menu_esquerdo' %}";
+
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id_mn_Esquerdo: novoValor
+          })
+        })
+        .then(response => {
+          if (response.ok) {
+            console.log('Valor atualizado com sucesso');
+            obj.id = novoValor.toString(); // atualiza o id do botão
+          } else {
+            console.error('Erro ao atualizar');
+          }
+        })
+        .catch(error => {
+          console.error('Erro na requisição:', error);
+        });
+        body: JSON.stringify({ id_mn_Esquerdo: parseInt(obj.id) })
+        // Assume que é zero se for 1 e Um se for zero        
+        obj.id = obj.id === "1" ? "0" : "1";
+      }
+
+      function abrirPainelDireito() {
+        // Exemplo: abrir painel lateral direito
+        document.getElementById('painel-direito').classList.toggle('ativo');
+      }
+
+      
+
+    </script>      
 
 
   </body>
