@@ -8,4 +8,5 @@ echo "🔧 Ajustando permissões do pgAdmin..."
 sudo mkdir -p ./data/pgadmin/sessions
 sudo chown -R 5050:5050 ./data/pgadmin
 
+
 echo "✅ Ambiente pronto. Agora rode: docker compose up --build"

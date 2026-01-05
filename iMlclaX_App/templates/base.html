@@ -30,11 +30,12 @@
     <link href="{% static 'geral/assets/vendor/quill/quill.snow.css'%}" rel="stylesheet">
     <link href="{% static 'geral/assets/vendor/quill/quill.bubble.css'%}" rel="stylesheet">
     <link href="{% static 'geral/assets/vendor/remixicon/remixicon.css'%}" rel="stylesheet">
+    <link href="{% static 'geral/assets/vendor/simple-datatables/style.css'%}?v={% now 'YmdHis' %}" rel="stylesheet">    
     <link href="{% static 'geral/assets/css/style.css'%}?v={% now 'YmdHis' %}" rel="stylesheet">
 
   </head>
   
-  <body>
+  <body class="base-class {% if Perfil_User.id_mn_Esquerdo == '0' %}toggle-sidebar{% endif %}">
 
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center">
@@ -52,11 +53,14 @@
             class="bi bi-list toggle-sidebar-btn"
             style="cursor: pointer;"></i>
 
-          <!-- Novo botão ao lado -->
-          <i onclick="abrirPainelDireito();"
-            class="bi bi-layout-sidebar-inset-reverse"
-            style="cursor: pointer;">
-          </i>
+          {% block 'mnTopEsquerdo' %}
+            <!-- Novo botão ao lado -->
+            <i onclick="abrirPainelDireito();"
+              class="bi bi-layout-sidebar-inset-reverse"
+              style="cursor: pointer;">
+            </i>
+          {% endblock 'mnTopEsquerdo' %}
+
         </div>
       </div><!-- End Logo -->
 
@@ -283,78 +287,104 @@
     </header><!-- End Header -->
 
 
-      <!-- Menu Principal Esquerdo -->
-      <aside id="sidebar" class="sidebar">
-        <ul class="sidebar-nav" id="sidebar-nav">
-          <li class="nav-item">
-            <a class="nav-link collapsed" href="./"><i class="bi bi-grid"></i><span>Menu Principal</span></a>
-          </li>
+    <!-- Menu Principal Esquerdo -->
+    <aside id="sidebar" class="sidebar">
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="./"><i class="bi bi-grid"></i><span>Menu Principal</span></a>
+        </li>
 
-          <!-- ======= Se o usuário for do grupo Atendente ======= -->
-          {% if cGrp_Usuario == 'Orientador' and not request.user.is_superuser %}
+        <!-- ======= Se o usuário for do grupo Atendente ======= -->
+        {% if cGrp_Usuario == 'Orientador' and not request.user.is_superuser %}
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-menu-button-wide"></i><span>Atendimento</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li><a title="Lista de cadastro de clientes" href="{% url 'url_clnts_lista' %}"><i class="bi bi-circle"></i><span>Clientes</span></a></li>
+              <li><a title="Lista de cadastro de Consultas" href="{% url 'url_pcnts_cnsltas' %}"><i class="bi bi-circle"></i><span>Consultas</span></a></li>
+              <li><a title="Lista de cadastro de Autorizações" href="{% url 'url_atrzacoes'  %}"><i class="bi bi-circle"></i><span>Autorizações</span></a></li>
+              <li><a title="Agenda"  href="{% url 'url_agenda' %}"><i class="bi bi-circle"></i><span>Agenda---</span></a></li>
+            </ul>
+          </li><!-- End Forms Nav -->
+        {% endif %}
+        <!-- ======= Finaliza se o usuário for do grupo Atendente ======= -->
+
+        <!-- ======= Se o usuário for do grupo Gerente ======= -->
+          {% if cGrp_Usuario == 'Pesquisador' and not request.user.is_superuser %}
             <li class="nav-item">
               <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Atendimento</span><i class="bi bi-chevron-down ms-auto"></i>
               </a>
               <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li><a title="Lista de cadastro de clientes" href="{% url 'url_clnts_lista' %}"><i class="bi bi-circle"></i><span>Clientes</span></a></li>
-                <li><a title="Lista de cadastro de Consultas" href="{% url 'url_pcnts_cnsltas' %}"><i class="bi bi-circle"></i><span>Consultas</span></a></li>
-                <li><a title="Lista de cadastro de Autorizações" href="{% url 'url_atrzacoes'  %}"><i class="bi bi-circle"></i><span>Autorizações</span></a></li>
-                <li><a title="Agenda"  href="{% url 'url_agenda' %}"><i class="bi bi-circle"></i><span>Agenda---</span></a></li>
+                <li><a title="Lista de cadastro de clientes"  href=""><i class="bi bi-circle"></i><span>Clientes</span></a></li>
+                <li><a title="Lista de cadastro de Consultas" href=""><i class="bi bi-circle"></i><span>Consultas</span></a></li>
+                <li><a title="Lista de cadastro de Autorizações" href=""><i class="bi bi-circle"></i><span>Autorizações</span></a></li>
+                <li><a title="Agenda" href=""><i class="bi bi-circle"></i><span>Agenda</span></a></li>
               </ul>
-            </li><!-- End Forms Nav -->
+            </li>
           {% endif %}
-          <!-- ======= Finaliza se o usuário for do grupo Atendente ======= -->
+        <!-- ======= Finaliza se o usuário for do grupo Gerente ======= -->
 
-          <!-- ======= Se o usuário for do grupo Gerente ======= -->
-            {% if cGrp_Usuario == 'Pesquisador' and not request.user.is_superuser %}
-              <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                  <i class="bi bi-menu-button-wide"></i><span>Atendimento</span><i class="bi bi-chevron-down ms-auto"></i>
+        <!-- ======= Se o usuário for do grupo Super Usuário ======= -->
+        {% if request.user.is_superuser %}
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#Mapa-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-menu-button-wide"></i><span>Mapa-Painel de Controle</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="Mapa-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li><a title="Resumo dos projetos ativos, status das análises em execução e uso de armazenamento." id="sidebar-nav-Mapa-V-Geral" href=""><i class="bi bi-circle"></i><span>Visão Geral</span></a></li>
+              <li><a title="Log dos últimos arquivos carregados ou análises concluídas." id="sidebar-nav-Atvddes-Rcentes" href=""><i class="bi bi-circle"></i><span>Atividades Recentes</span></a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" onClick="acssaProjetos(this);" data-url="{% url 'url_Prjtos' %}" data-tooltip='Este menu permite agrupar vários arquivos .fasta sob um contexto comum (ex: 'Sequenciamento de Fungos Patogênicos').' data-bs-target="#Projetos-nav" data-bs-toggle="collapse" title="Este menu permite agrupar vários arquivos .fasta sob um contexto comum (ex: 'Sequenciamento de Fungos Patogênicos')." href="{% url 'url_Prjtos' %}">
+              <i class="bi bi-menu-button-wide"></i><span>Projetos/Estudos</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="Projetos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li><a title="Resumo dos projetos ativos, status das análises em execução e uso de armazenamento." href="{% url 'url_mAnalises' %}" id="sidebar-nav-mAnalises"><i class="bi bi-circle"></i><span>Analises</span></a></li>
+              <li><a title="Meus Projetos." href="{% url 'url_mPrjtos' %}" id="sidebar-nav-meus-Projetos"><i class="bi bi-circle"></i><span>Meus Projetos</span></a></li>
+              <li><a title="Colaborações Gerais." href="{% url 'url_Clbrcoes' %}" id="sidebar-nav-clbrcao-Projetos"><i class="bi bi-circle"></i><span>Colaboradores</span></a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#Cadastro-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-menu-button-wide"></i><span>Cadastro</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="Cadastro-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li><a title="Lista de cadastro de clientes" id="sidebar-nav-Cdstro-ODcentes" href="{% url 'url_oDocentes' %}"><i class="bi bi-circle"></i><span>Orientadores/Docentes</span></a></li>
+              <li><a title="Lista de cadastro de Consultas" id="sidebar-nav-Cdstro-PDiscentes" href="{% url 'url_pDiscentes' %}"><i class="bi bi-circle"></i><span>Pesquisadores/Discentes</span></a></li>
+              <li><a title="Lista de cadastro de Autorizações" id="sidebar-nav-Cdstro-OColaboradores" href="{% url 'url_oColaboradores' %}"><i class="bi bi-circle"></i><span>Ouvintes/Colaboradores</span></a></li>
+              <li><a title="Agenda" id="sidebar-nav-Cdstro-Agenda"  href="{% url 'url_agenda' %}"><i class="bi bi-circle"></i><span>Agenda</span></a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#security-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-menu-button-wide"></i><span>Security</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="security-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li><a title="Mapa Geral de Segurança" id="sidebar-nav-security-mapa" href=""><i class="bi bi-circle"></i><span>Mapa Geral</span></a></li>
+            </ul>
+          </li>
+          <li class="nav-heading">Configurações</li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#usuarios-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-menu-button-wide"></i><span>Usuários</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="usuarios-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li>
+                <a href="components-alerts.html">
+                  <i class="bi bi-circle"></i><span>Acessos</span>
                 </a>
-                <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                  <li><a title="Lista de cadastro de clientes"  href=""><i class="bi bi-circle"></i><span>Clientes</span></a></li>
-                  <li><a title="Lista de cadastro de Consultas" href=""><i class="bi bi-circle"></i><span>Consultas</span></a></li>
-                  <li><a title="Lista de cadastro de Autorizações" href=""><i class="bi bi-circle"></i><span>Autorizações</span></a></li>
-                  <li><a title="Agenda" href=""><i class="bi bi-circle"></i><span>Agenda</span></a></li>
-                </ul>
               </li>
-            {% endif %}
-          <!-- ======= Finaliza se o usuário for do grupo Gerente ======= -->
+            </ul>
+          </li><!-- End Forms Nav -->
+        {% endif %}
+        <!-- ======= Finaliza se o usuário for do grupo Gerente ======= -->
 
-          <!-- ======= Se o usuário for do grupo Super Usuário ======= -->
-          {% if request.user.is_superuser %}
-            <li class="nav-item">
-              <a class="nav-link collapsed" data-bs-target="#Mapa-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Mapa-Painel de Controle</span><i class="bi bi-chevron-down ms-auto"></i>
-              </a>
-              <ul id="Mapa-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li><a title="Resumo dos projetos ativos, status das análises em execução e uso de armazenamento." id="sidebar-nav-Mapa-V-Geral" href=""><i class="bi bi-circle"></i><span>Visão Geral</span></a></li>
-                <li><a title="Log dos últimos arquivos carregados ou análises concluídas." id="sidebar-nav-Atvddes-Rcentes" href=""><i class="bi bi-circle"></i><span>Atividades Recentes</span></a></li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link collapsed" data-bs-target="#Projetos-nav" data-bs-toggle="collapse" title="Este menu permite agrupar vários arquivos .fasta sob um contexto comum (ex: 'Sequenciamento de Fungos Patogênicos')." href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Projetos</span><i class="bi bi-chevron-down ms-auto"></i>
-              </a>
-              <ul id="Projetos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li><a title="Resumo dos projetos ativos, status das análises em execução e uso de armazenamento." id="sidebar-nav-Projetos" href=""><i class="bi bi-circle"></i><span>Meus Projetos</span></a></li>
-                <li><a title="Log dos últimos arquivos carregados ou análises concluídas." href=""><i class="bi bi-circle"></i><span>Criar Novo Projeto</span></a></li>
-                <li><a title="Log dos últimos arquivos carregados ou análises concluídas." href=""><i class="bi bi-circle"></i><span>Colaboração</span></a></li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Cadastro</span><i class="bi bi-chevron-down ms-auto"></i>
-              </a>
-              <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li><a title="Lista de cadastro de clientes" id="sidebar-nav-Atendimento-clientes" href=""><i class="bi bi-circle"></i><span>Clientes</span></a></li>
-                <li><a title="Lista de cadastro de Consultas" id="sidebar-nav-Atendimento-consultas" href=""><i class="bi bi-circle"></i><span>Consultas</span></a></li>
-                <li><a title="Lista de cadastro de Autorizações" id="sidebar-nav-Atendimento-autorizações" href=""><i class="bi bi-circle"></i><span>Autorizações</span></a></li>
-                <li><a title="Agenda" id="sidebar-nav-Atendimento-agenda"  href=""><i class="bi bi-circle"></i><span>Agenda</span></a></li>
-              </ul>
-            </li>
-
+        <!-- ======= Se o usuário for do PI-IV ======= -->
+          {% if cGrp_Usuario == 'PI-IV' and not request.user.is_superuser %}
             <li class="nav-item">
               <a class="nav-link collapsed" data-bs-target="#security-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Security</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -363,99 +393,62 @@
                 <li><a title="Mapa Geral de Segurança" id="sidebar-nav-security-mapa" href=""><i class="bi bi-circle"></i><span>Mapa Geral</span></a></li>
               </ul>
             </li>
-            <li class="nav-heading">Configurações</li>
-            <li class="nav-item">
-              <a class="nav-link collapsed" data-bs-target="#usuarios-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Usuários</span><i class="bi bi-chevron-down ms-auto"></i>
-              </a>
-              <ul id="usuarios-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                  <a href="components-alerts.html">
-                    <i class="bi bi-circle"></i><span>Acessos</span>
-                  </a>
-                </li>
-              </ul>
-            </li><!-- End Forms Nav -->
           {% endif %}
-          <!-- ======= Finaliza se o usuário for do grupo Gerente ======= -->
-
-          <!-- ======= Se o usuário for do PI-IV ======= -->
-            {% if cGrp_Usuario == 'PI-IV' and not request.user.is_superuser %}
-              <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#security-nav" data-bs-toggle="collapse" href="#">
-                  <i class="bi bi-menu-button-wide"></i><span>Security</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="security-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                  <li><a title="Mapa Geral de Segurança" id="sidebar-nav-security-mapa" href=""><i class="bi bi-circle"></i><span>Mapa Geral</span></a></li>
-                </ul>
-              </li>
-            {% endif %}
-          <!-- ======= Fim das opções para os suário do PI-IV ======= -->
+        <!-- ======= Fim das opções para os suário do PI-IV ======= -->
 
 
 
 
-          <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#Help-nav" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-menu-button-wide"></i><span>Help - {{Perfil_User.id_mn_Esquerdo}}</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="Help-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-              <li>
-                <a class="nav-link collapsed" id="sidebar-nav-sobre" href=""><i class="bi bi-circle"></i><span>Sobre</span></a>
-              </li>
-            </ul>
-          </li><!-- End Forms Nav -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#Help-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-menu-button-wide"></i><span>Help</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="Help-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+              <a class="nav-link collapsed" id="sidebar-nav-sobre" href=""><i class="bi bi-circle"></i><span>Sobre</span></a>
+            </li>
+          </ul>
+        </li><!-- End Forms Nav -->
 
 
-        </ul>
+      </ul>
 
-      </aside><!-- End Sidebar-->
+    </aside><!-- End Sidebar-->
 
+  
+    {% block 'body' %}
     
-      {% block 'body' %}
-      
-      
-      
-      {% endblock 'body' %}
-
-
-      <!-- Footer -->
-      <footer id="footer" class="footer">
-        <div class="copyright">
-              2024 : <strong>{% now "Y" %}</strong> - By: Macedo, Glener Diniz<b> - iMoleculaX : Sistema de Gerenciamento de Sequenciamento Genético.</b>
-        </div>
-      </footer
-      ><!-- End Footer -->
-
-      <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-      <!-- Vendor JS Files -->
-      <script src="{% static 'geral/assets/vendor/apexcharts/apexcharts.min.js'%}"></script>
-      <script src="{% static 'geral/assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
-      <script src="{% static 'geral/assets/vendor/chart.js/chart.umd.js'%}"></script>
-      <script src="{% static 'geral/assets/vendor/echarts/echarts.min.js'%}"></script>
-      <script src="{% static 'geral/assets/vendor/quill/quill.js'%}"></script>
-      <script src="{% static 'geral/assets/vendor/simple-datatables/simple-datatables.js'%}"></script>
-      <script src="{% static 'geral/assets/vendor/tinymce/tinymce.min.js'%}"></script>
-      <script src="{% static 'geral/assets/vendor/php-email-form/validate.js'%}"></script>
-
-
-      <!-- Template Main JS File -->
-      <script src="{% static 'geral/assets/js/main.js' %}?v={% now 'YmdHis' %}"></script>
-
-      <script src="{% static 'geral/js/myFunctions.js' %}?v={% now 'YmdHis' %}}"></script>
-
-
-      {% if Perfil_User.id_mn_Esquerdo == '0' %}
-          <script>
-            document.addEventListener("DOMContentLoaded", function () {
-              document.body.classList.add("toggle-sidebar");
-            });
-          </script>
-      {% endif %}
-
-
     
+    
+    {% endblock 'body' %}
+
+
+    <!-- Footer -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+            2024 : <strong>{% now "Y" %}</strong> - By: Macedo, Glener Diniz<b> - iMoleculaX : Sistema de Gerenciamento de Sequenciamento Genético.</b>
+      </div>
+    </footer
+    ><!-- End Footer -->
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'geral/assets/vendor/apexcharts/apexcharts.min.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/chart.js/chart.umd.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/echarts/echarts.min.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/quill/quill.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/simple-datatables/simple-datatables.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/tinymce/tinymce.min.js'%}"></script>
+    <script src="{% static 'geral/assets/vendor/php-email-form/validate.js'%}"></script>
+
+
+    <!-- Template Main JS File -->
+    <script src="{% static 'geral/assets/js/main.js' %}?v={% now 'YmdHis' %}"></script>
+
+    <script src="{% static 'geral/js/myFunctions.js' %}?v={% now 'YmdHis' %}}"></script>
+
     <script>
       function svsttusmnesquerdo(obj) {
         let novoValor = obj.id === "1" ? 0 : 1;
@@ -486,14 +479,28 @@
         obj.id = obj.id === "1" ? "0" : "1";
       }
 
+      function acssaProjetos(obj){
+        // 1. Obter o URL do atributo de dados
+        var url = obj.getAttribute('data-url');
+
+        // 2. Usar o URL na função open()
+        if (url) {
+          // Abre uma nova janela/aba com o URL especificado
+          window.open(url, '_top');
+        } else {
+          console.error("URL não encontrado no atributo de dados.");
+        }
+      }
+
+
       function abrirPainelDireito() {
         // Exemplo: abrir painel lateral direito
         document.getElementById('painel-direito').classList.toggle('ativo');
       }
 
-      
+     
 
-    </script>      
+    </script>
 
 
   </body>

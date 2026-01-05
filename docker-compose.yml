@@ -2,19 +2,25 @@ version: '3.9'
 
 services:
   imlclax_app:
-    user: "root"  #Assim o Django roda como root e sempre terá permissão para escrever.
+    user: "root"  # Assim o Django roda como root e sempre terá permissão para escrever.
     container_name: imlclax_app
     build:
       context: .
+    command: /scripts/commands.sh   # fora do build
+    volumes:                        # fora do build
+      - ./scripts/commands.sh:/scripts/commands.sh
+      - ./iMlclaX_App:/iMlclaX_App
+      - ./data/web/media:/data/web/media
+      - ./data/web/fasta:/data/web/fasta
     ports:
       - "8989:8989"
-    volumes:
-      - ./iMlclaX_App:/iMlclaX_App
-      - ./data/web/media:/data/web/media/
+    environment:
+      - DJANGO_SETTINGS_MODULE=_project.settings
     env_file:
       - ./dotenv_files/.env
     depends_on:
       - imlclax_psql
+
 
   imlclax_psql:
     container_name: imlclax_psql

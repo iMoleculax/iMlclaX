@@ -305,9 +305,9 @@ def fnct_cdstro(request: HttpRequest) -> HttpResponse:
 @login_required(login_url='/usuarios/login/')
 def fnct_clnts_lista(request):
 
-    slct_Clnts_Lsta = User.objects.all().filter(is_superuser=0)
+    slct_orntdresDocentes_Lsta = User.objects.all().filter(is_superuser=0)
 
-    return render(request, 'clientes_lista.html', {'RlcaoDClntes': slct_Clnts_Lsta, 'cGrp_Usuario': Get_cGrp_Usuario(request.user)})
+    return render(request, 'orntdresDocentes.html', {'RlcaoDClntes': slct_orntdresDocentes_Lsta, 'cGrp_Usuario': Get_cGrp_Usuario(request.user)})
 
 
 @login_required(login_url='/usuarios/login/')
@@ -936,3 +936,52 @@ def atualizar_menu_esquerdo(request):
 
     # Se não for POST, retorna erro
     return JsonResponse({'error': 'Método não permitido'}, status=405)
+
+# Orientadores, Doscentes
+
+
+@login_required
+def fnct_odcentes_lista(request):
+
+    slct_orntdresDocentes_Lsta = User.objects.filter(is_superuser=False,   # não superusuário
+                                                     groups__id=1          # pertencente ao grupo com id=1
+                                                     )
+
+    return render(request, 'orntdresDocentes.html', {'RlcaoDClntes': slct_orntdresDocentes_Lsta, 'cGrp_Usuario': Get_cGrp_Usuario(request.user)})
+
+
+def fnct_oDocentes(request):
+
+    slct_orntdresDocentes_Lsta = User.objects.filter(is_superuser=False,   # não superusuário
+                                                     groups__id=1          # pertencente ao grupo com id=1
+                                                     )
+
+    return render(request, 'orntdresDocentes.html', {'RlcaoDClntes': slct_orntdresDocentes_Lsta, 'cGrp_Usuario': Get_cGrp_Usuario(request.user)})
+
+
+# Pesquisadores, Discentes, Alunos.
+@login_required
+def fnct_pDiscentes(request):
+
+    slct_oDiscentes = User.objects.filter(is_superuser=False,   # não superusuário
+                                          groups__id=2          # pertencente ao grupo com id=2
+                                          )
+    return render(request, 'psqsdresDiscentes.html', {'RlcaoDClntes': slct_oDiscentes, 'cGrp_Usuario': Get_cGrp_Usuario(request.user)})
+
+
+# Pesquisadores, Discentes, Alunos.
+@login_required
+def fnct_oColaboradores(request):
+
+    slct_oColaboradores = User.objects.filter(is_superuser=False,   # não superusuário
+                                              groups__id=3          # pertencente ao grupo com id=3
+                                              )
+
+    return render(request, 'ouvntsColaboradores.html', {'RlcaoDClntes': slct_oColaboradores, 'cGrp_Usuario': Get_cGrp_Usuario(request.user)})
+
+
+@login_required
+def fnct_odcentes_nvBska(request):
+    slct_orntdresDocentes_Lsta = User.objects.all().filter(is_superuser=0)
+
+    return render(request, 'lstBuska.html', {'RlcaoDClntes': slct_orntdresDocentes_Lsta, 'cGrp_Usuario': Get_cGrp_Usuario(request.user)})

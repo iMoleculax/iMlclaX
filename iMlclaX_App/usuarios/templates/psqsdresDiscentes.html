@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+
+{% block 'title' %}
+
+  iMoleculaX : Pesquisadores & Discentes
+
+{% endblock 'title' %}
+
+          {% block 'mnTopEsquerdo' %}
+            <!-- Novo botão ao lado -->
+            <i onclick="opnGeral(this);" data-url="{% url 'url_odcentes_lista'%}" title="Lista de todos os colaboradores."
+              class="bi bi-bookmark-fill"
+              style="cursor: pointer;">
+            </i>
+            <i onclick="abrirPainelDireito();" title="Projetos em planejamento"
+              class="bi bi-align-bottom"
+              style="cursor: pointer;">
+            </i>
+            <i onclick="abrirPainelDireito();" title="Projetos em andamentos"
+              class="bi bi bi-align-center"
+              style="cursor: pointer;">
+            </i>
+            <i onclick="abrirPainelDireito();" title="Projetos já Concluidos"
+              class="bi bi-align-top"
+              style="cursor: pointer;">
+            </i>
+            <i onclick="abrirPainelDireito();" title="Projetos Cancelados"
+              class="bi  bi-archive-fill"
+              style="cursor: pointer;">
+            </i>
+            <i onclick="opnBuska(this);" data-url="url_odcentes_nvBska" title="Novos e busca por projetos"
+              class="bi bi-search"
+              style="cursor: pointer;">
+            </i>
+          {% endblock 'mnTopEsquerdo' %}
+
+{% block 'body' %}  
+
+
+      <!-- ======= Sidebar ======= -->
+    <div class="wrapper">
+
+        <main id="main" class="main">
+
+            <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/dashboard/">Cadastro</a></li>
+                <li class="breadcrumb-item active" title='Orientadores e Docentes'>Pesquisadores & Discentes</li>
+                </ol>
+            </nav>
+            </div><!-- End Page Title -->
+
+            {% for message in messages %}
+                <section class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                    <i class="bi 
+                        {% if message.tags == 'success' %}bi-check-circle-fill text-success
+                        {% elif message.tags == 'error' %}bi-x-circle-fill text-danger
+                        {% elif message.tags == 'warning' %}bi-exclamation-triangle-fill text-warning
+                        {% else %}bi-info-circle-fill text-info{% endif %}
+                    "></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </section>
+            {% endfor %}
+            
+            <section class="section">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><a data-tooltip='Orientadores e Docentes' class="icon">Orientadores e Docentes</a></h5>
+                                {% if messages %}
+                                    <br>
+                                    {% for message in messages %}
+                                        <section class="alert {{message.tags}}">
+                                            {{message}}
+                                        </section>
+                                    {% endfor %}
+                                {% endif %}
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="VGeral-tab" data-bs-toggle="tab" data-bs-target="#VGeral" type="button" role="tab" aria-controls="VGeral" aria-selected="true">Geral</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="Planejado-tab" data-bs-toggle="tab" data-bs-target="#Planejado" type="button" role="tab" aria-controls="Planejado" aria-selected="false">Planejado</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="emAndamento-tab" data-bs-toggle="tab" data-bs-target="#emAndamento" type="button" role="tab" aria-controls="emAndamento" aria-selected="false">Em andamento</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="Concluído-tab" data-bs-toggle="tab" data-bs-target="#Concluído" type="button" role="tab" aria-controls="Concluído" aria-selected="false">Concluído</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="Cancelado-tab" data-bs-toggle="tab" data-bs-target="#Cancelado" type="button" role="tab" aria-controls="Cancelado" aria-selected="false">Cancelado</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="#AltrrPswrd-tab" data-bs-toggle="tab" data-bs-target="#AltrrPswrd" type="button" role="tab" aria-controls="#AltrrPswrd" aria-selected="false">Novo/Busca</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content pt-2" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="VGeral" role="tabpanel" aria-labelledby="VGeral" aria-selected="true">  
+                                        <!-- Table with stripped rows -->
+                                        <table class="table datatable table-borderless">
+                                        {% if RlcaoDClntes %}
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Nome</th>
+                                                    <th scope="col">Projeto</th>
+                                                    <th scope="col">Integrantes</th>
+                                                    <th scope="col">dt Inicial</th>
+                                                    <th scope="col">eMail</th>
+                                                </tr>
+                                                </tr>
+                                            </thead>
+                                        {% endif %}
+                                            <tbody>
+                                                {% for cliente in RlcaoDClntes  %}
+                                                    <tr data-url-base="{% url 'url_clnts_edit' 0 %}" id="{{ cliente.id }}" onClick="acssaClnts_edit(this);" id="{{ cliente.id }}" style="cursor:pointer;">
+                                                        <td><a href="{% url 'url_clnts_edit' cliente.id %}">{{cliente.first_name}} {{cliente.last_name}}</a></td>
+                                                        <td><a href="{% url 'url_clnts_edit' cliente.id %}">{{cliente.username}}</a></td>
+                                                        <td><a href="{% url 'url_clnts_edit' cliente.id %}">{{cliente.email}}</a></td>
+                                                        <td><a href="{% url 'url_clnts_edit' cliente.id %}">15/05/2025</a></td>
+                                                        <td><a href="{% url 'url_clnts_edit' cliente.id %}">{{cliente.email}}</a></td>
+                                                    </tr>
+                                                {% empty %} 
+                                                    <p>Nenhum registro encontrado.</p>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <!-- End Table with stripped rows -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main><!-- End #main -->
+
+    </div>
+  <!--Ativa as opções do menu principal esquerdo -->
+  <script language="JavaScript">
+    <!--
+        document.getElementById('Cadastro-nav').className ='nav-content collapse show';
+        document.getElementById('sidebar-nav-Cdstro-PDiscentes').className ='active';
+
+        function opnGeral(obj){
+            var url = obj.getAttribute('data-url');
+            window.open(url, '_top');            
+        }
+        function opnBuska(obj){
+            var url = obj.getAttribute('data-url');
+            window.open(url, '_top');            
+        }
+    //-->
+  </script>
+
+
+
+
+{% endblock 'body' %}
+
+
+</html>
+
+

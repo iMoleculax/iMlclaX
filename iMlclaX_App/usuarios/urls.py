@@ -3,17 +3,23 @@ from . import views
 
 
 urlpatterns = [
-    
+
     path('lista/', views.fnct_clnts_lista, name="url_clnts_lista"),
+    path('oDocentes/', views.fnct_oDocentes, name="url_oDocentes"),
+    path('pDiscentes/', views.fnct_pDiscentes, name="url_pDiscentes"),
+    path('oColaboradores/', views.fnct_oColaboradores, name="url_oColaboradores"),
     path('cliente/<int:id_cliente>/',
          views.fnct_clnts_edit, name="url_clnts_edit"),
-    path('cadastro/', views.fnct_cdstro, name='url_cadastro'), 
+
+
+    path('cadastro/', views.fnct_cdstro, name='url_cadastro'),
 
     path('buscar-endereco/<str:cep>/',
          views.buscar_endereco, name='buscar_endereco'),
 
-    path('edita-endereco/<int:id_endrco>/', views.fnct_endr_clnt_prfl, name='url_ender_clnte_prfl'),
-         
+    path('edita-endereco/<int:id_endrco>/',
+         views.fnct_endr_clnt_prfl, name='url_ender_clnte_prfl'),
+
     path('edita-endereco/<int:id_endrco>/',
          views.fnct_endereco_clnte_cdstro, name='url_endereco_clnte_cdstro'),
     path('cliente-endereco-add/<int:id_cliente>/',
@@ -39,4 +45,10 @@ urlpatterns = [
     path('agenda/', views.fnct_agenda, name="url_agenda"),
     path('atualizar_menu_esquerdo/', views.atualizar_menu_esquerdo,
          name='atualizar_menu_esquerdo'),
+
+    path('atualizar_menu_esquerdo/', views.fnct_odcentes_lista,
+         name='url_odcentes_lista'),
+
+    path('atualizar_menu_esquerdo/', views.fnct_odcentes_nvBska,
+         name='url_odcentes_nvBska'),
 ]
